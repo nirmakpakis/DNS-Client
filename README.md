@@ -37,12 +37,11 @@ java DnsClient –t 10 –r 2 –mx @8.8.8.8 mcgill.ca
 
 ## Output behavior
 
-First 3 lines:
-
-* DnsClient sending request for ```name```
-* Server: ```server IP address```
-* Request type: ```A```| ```MX``` | ```NS```
-
+``` bash
+ DnsClient sending request for **name**
+ Server: **server IP address**
+ Request type: **A|MX|NS**
+```
 
 
 
