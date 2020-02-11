@@ -38,9 +38,9 @@ java DnsClient –t 10 –r 2 –mx @8.8.8.8 mcgill.ca
 ## Output behavior
 
 ```
- DnsClient sending request for *name*
- Server: server IP address
- Request type: A|MX|NS
+ DnsClient sending request for <NAME>
+ Server: <SERVER_IP_ADDRESS>
+ Request type: <A|MX|NS>
 ```
 
 
