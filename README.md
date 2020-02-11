@@ -1,6 +1,8 @@
 # DNS-Client
 This project is for ECSE 316 class
 
+### Dns Client is invoked at the command line using the following syntax on command line:
+
 ```bash
 Java DnsClient [-t timeout] [-r max-retries] [-p port] [-mx|-ns] @server name
 ```
