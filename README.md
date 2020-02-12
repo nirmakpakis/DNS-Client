@@ -37,12 +37,19 @@ java DnsClient –t 10 –r 2 –mx @8.8.8.8 mcgill.ca
 
 ## Output behavior
 
+### Input
+``` bash 
+java DnsClient @8.8.8.8 fb.com
 ```
- DnsClient sending request for [name]
- Server: [server IP address]
- Request type: [A | MX | NS]
- Response received after [time] seconds ([num-retries] retries)
- 
+
+### Output
+```
+DnsClient sending request for fb.com
+Server: 8.8.8.8
+Request type: A
+Response received after 0.023 seconds (0 retries)
+***Answer Section (1 answerRecords)***
+IP	31.13.80.36	299	nonauth
 ```
 
 
