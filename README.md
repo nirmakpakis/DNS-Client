@@ -54,6 +54,7 @@ DnsClient sending request for fb.com
 Server: 8.8.8.8
 Request type: A
 Response received after 0.023 seconds (0 retries)
+
 ***Answer Section (1 answerRecords)***
 IP	31.13.80.36	299	nonauth
 ```
@@ -64,7 +65,7 @@ java DnsClient @8.8.8.8 www.fb.com
 ```
 
 ### Output 
-``` bash 
+``` 
 DnsClient sending request for fb.com
 Server: 8.8.8.8
 Request type: A
@@ -80,7 +81,7 @@ java DnsClient -mx @8.8.8.8 yahoo.com
 ```
 
 ### Output 
-``` bash
+``` 
 DnsClient sending request for www.fb.com
 Server: 8.8.8.8
 Request type: A
