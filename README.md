@@ -51,13 +51,19 @@ java DnsClient –t 10 –r 2 –mx @8.8.8.8 mcgill.ca
 ### Displaying Time Passed To Receive the Response
 * Response received after [time] seconds ([num-retries] retries)
 
-## Displaying Response
+### Displaying Response
+#### Answer Section
 * ***Answer Section ([num-answers] records)***
 * IP  [ip address] [seconds can cache] [auth | nonauth]
 * CNAME  [alias]  [seconds can cache]  [auth | nonauth]
 * MX [alias] [pref] [seconds can cache] [auth | nonauth] 
 * NS [alias] [seconds can cache]  [auth | nonauth]
-
+#### Additional Section
+* ***Additional Section ([num-additional] records)***
+* NOTFOUND
+* ERROR <tab> Incorrect input syntax: [description of specific problem] 
+* ERROR <tab> Maximum number of retries [max-retries] exceeded
+* ERROR <tab> Unexpected response [description of unexpected response content]
 
 
 ### Input: IP Address Record
