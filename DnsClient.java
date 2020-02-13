@@ -7,10 +7,7 @@ import java.util.ListIterator;
 public class DnsClient {
     public static void main(final String args[]) throws Exception {
         final DnsClient client = new DnsClient(args);
-    }
-
-    enum QType {
-        A, NS, MX;
+        client.makeRequest();
     }
 
     public int timeOut = 5;
@@ -20,6 +17,7 @@ public class DnsClient {
     public String domainName;
     public String serverString;
     public QType qType = QType.A;
+    public byte[] responseBytes = new byte[1024];
 
     public DnsClient(final String args[]) {
         this.parseInput(args);
@@ -30,6 +28,46 @@ public class DnsClient {
         System.out.println("domainName:" + domainName);
         System.out.println("serverString:" + serverString);
         System.out.println("qType:" + qType);
+    }
+
+    public void makeRequest() {
+        // Get Request to send
+        DnsRequest request = new DnsRequest(domainName, qType);
+        byte[] requestBytes = request.getRequest();
+        int requestSize = requestBytes.length;
+
+        try {
+
+            DatagramSocket socket = new DatagramSocket();
+            socket.setSoTimeout(timeOut);
+            InetAddress inetaddress = InetAddress.getByAddress(server);
+
+            DatagramPacket requestPacket = new DatagramPacket(requestBytes, requestSize, inetaddress, portNumber);
+            DatagramPacket responsePacket = new DatagramPacket(responseBytes, requestSize);
+
+            // Send packet and time response
+            long startTime = System.currentTimeMillis();
+            socket.send(requestPacket);
+            socket.receive(responsePacket);
+            long endTime = System.currentTimeMillis();
+            socket.close();
+
+            System.out.println("Response received after " + (endTime - startTime) / 1000. + " seconds " + "("
+                    + (maxRetires - 1) + " retries)");
+
+            DnsResponse response = new DnsResponse(responsePacket.getData(), requestBytes.length);
+            response.outputResponse();
+        } catch (SocketException e) {
+            System.out.println("ERROR\tCould not create socket");
+        } catch (UnknownHostException e) {
+            System.out.println("ERROR\tUnknown host");
+        } catch (SocketTimeoutException e) {
+            System.out.println("ERROR\tSocket Timeout");
+            System.out.println("Reattempting request...");
+            // pollRequest(++retryNumber);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void parseInput(final String[] args) {

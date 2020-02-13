@@ -4,7 +4,7 @@ public class NSRecord {
     public int secondsCanCache;
     public boolean autoritive;
 
-    public NSRecord(RData){
+    public NSRecord() {
 
     }
 
