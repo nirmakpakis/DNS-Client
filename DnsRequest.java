@@ -1,3 +1,6 @@
+import java.nio.ByteBuffer;
+import java.util.Random;
+
 public class DnsRequest {
 
     public String domainName;
@@ -9,10 +12,27 @@ public class DnsRequest {
         this.qType = qType;
     }
 
-    // TODO: implement header.java
-    public byte[] getRequest() {
-        // implement header
-        // implement question
+    public byte[] createRequest() {
+
+        ByteBuffer request = ByteBuffer.allocate(12 + 5 + getQNameLength());
+
+        Header header = new Header();
+        byte[] headerArray = header.createHeaderArray();
+        request.put(headerArray);
+
+        Question question = new Question(domainName, qType);
+        request.put(question.createQuestionArray());
+
+        return request.array();
+    }
+
+    public int getQNameLength() {
+        int count = 0;
+        String[] items = domainName.split("\\.");
+        for (String item : items) {
+            count += item.length() + 1;
+        }
+        return count;
     }
 
 }
