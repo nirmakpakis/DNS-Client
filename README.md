@@ -43,10 +43,20 @@ java DnsClient –t 10 –r 2 –mx @8.8.8.8 mcgill.ca
 
 ## Output behavior
 
- * IP  [ip address] [seconds can cache] [auth | nonauth]
- * CNAME  [alias]  [seconds can cache]  [auth | nonauth]
- * MX [alias] [pref] [seconds can cache] [auth | nonauth] 
- * NS [alias] [seconds can cache]  [auth | nonauth]
+### Displaying Request
+* DnsClient sending request for [name] 
+* Server: [server IP address]
+* Request type: [A | MX | NS]
+
+### Displaying Time Passed To Receive the Response
+* Response received after [time] seconds ([num-retries] retries)
+
+## Displaying Response
+* ***Answer Section ([num-answers] records)***
+* IP  [ip address] [seconds can cache] [auth | nonauth]
+* CNAME  [alias]  [seconds can cache]  [auth | nonauth]
+* MX [alias] [pref] [seconds can cache] [auth | nonauth] 
+* NS [alias] [seconds can cache]  [auth | nonauth]
 
 
 
