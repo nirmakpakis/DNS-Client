@@ -50,13 +50,15 @@ java DnsClient @8.8.8.8 www.fb.com
 
 ### Output 
 ```
-DnsClient sending request for fb.com
+DnsClient sending request for www.fb.com
 Server: 8.8.8.8
 Request type: A
-Response received after 0.023 seconds (0 retries)
+Response received after 0.024 seconds (0 retries)
 
-***Answer Section (1 answerRecords)***
-IP	31.13.80.36	299	nonauth
+***Answer Section (3 answerRecords)***
+CNAME	www.facebook.com	6612	nonauth
+CNAME	star-mini.c10r.facebook.com	3305	nonauth
+IP	31.13.80.36	59	nonauth
 ```
 
 ### Input: Name Server Record
