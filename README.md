@@ -43,10 +43,10 @@ java DnsClient –t 10 –r 2 –mx @8.8.8.8 mcgill.ca
 
 ## Output behavior
 
- *IP  [ip address] [seconds can cache] [auth | nonauth]
- *CNAME  [alias]  [seconds can cache]  [auth | nonauth]
- *MX [alias] [pref] [seconds can cache] [auth | nonauth] 
- *NS [alias] [seconds can cache]  [auth | nonauth]
+ * IP  [ip address] [seconds can cache] [auth | nonauth]
+ * CNAME  [alias]  [seconds can cache]  [auth | nonauth]
+ * MX [alias] [pref] [seconds can cache] [auth | nonauth] 
+ * NS [alias] [seconds can cache]  [auth | nonauth]
 
 
 
