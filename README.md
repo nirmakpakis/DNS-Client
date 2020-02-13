@@ -61,23 +61,7 @@ IP	31.13.80.36	299	nonauth
 
 ### Input: Name Server Record
 ``` bash 
-java DnsClient @8.8.8.8 www.fb.com
-```
-
-### Output 
-``` 
-DnsClient sending request for fb.com
-Server: 8.8.8.8
-Request type: A
-Response received after 0.035 seconds (0 retries)
-
-***Answer Section (1 answerRecords)***
-IP	31.13.80.36	299	nonauth
-```
-
-### Input: Mail Server Record
-``` bash 
-java DnsClient -mx @8.8.8.8 yahoo.com
+java DnsClient -nx @8.8.8.8 www.fb.com
 ```
 
 ### Output 
@@ -93,5 +77,20 @@ CNAME	star-mini.c10r.facebook.com	3023	nonauth
 IP	31.13.80.36	59	nonauth
 ```
 
+### Input: Mail Server Record
+``` bash 
+java DnsClient -mx @8.8.8.8 yahoo.com
+```
 
+### Output 
+```
+DnsClient sending request for yahoo.com
+Server: 8.8.8.8
+Request type: MX
+Response received after 0.009 seconds (0 retries)
 
+***Answer Section (3 answerRecords)***
+MX	mta7.am0.yahoodns.net	1	804	nonauth
+MX	mta5.am0.yahoodns.net	1	804	nonauth
+MX	mta6.am0.yahoodns.net	1	804	nonauth
+```
