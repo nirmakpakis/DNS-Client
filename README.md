@@ -3,7 +3,13 @@ This project is for ECSE 316 class
 
 ## Calling Syntax
 
-Dns Client is invoked at the command line using the following syntax on command line:
+Compile:
+
+```bash
+Javac DnsClient.java
+```
+
+Run: 
 
 ```bash
 Java DnsClient [-t timeout] [-r max-retries] [-p port] [-mx|-ns] @server name
