@@ -43,12 +43,12 @@ java DnsClient –t 10 –r 2 –mx @8.8.8.8 mcgill.ca
 
 ## Output behavior
 
-### Input
+### Input: IP Address Record
 ``` bash 
-java DnsClient @8.8.8.8 fb.com
+java DnsClient @8.8.8.8 www.fb.com
 ```
 
-### Output
+### Output 
 ```
 DnsClient sending request for fb.com
 Server: 8.8.8.8
@@ -58,6 +58,39 @@ Response received after 0.023 seconds (0 retries)
 IP	31.13.80.36	299	nonauth
 ```
 
+### Input: Name Server Record
+``` bash 
+java DnsClient @8.8.8.8 www.fb.com
+```
+
+### Output 
+``` bash 
+DnsClient sending request for fb.com
+Server: 8.8.8.8
+Request type: A
+Response received after 0.035 seconds (0 retries)
+
+***Answer Section (1 answerRecords)***
+IP	31.13.80.36	299	nonauth
+```
+
+### Input: Mail Server Record
+``` bash 
+java DnsClient -mx @8.8.8.8 yahoo.com
+```
+
+### Output 
+``` bash
+DnsClient sending request for www.fb.com
+Server: 8.8.8.8
+Request type: A
+Response received after 0.065 seconds (0 retries)
+
+***Answer Section (3 answerRecords)***
+CNAME	www.facebook.com	7199	nonauth
+CNAME	star-mini.c10r.facebook.com	3023	nonauth
+IP	31.13.80.36	59	nonauth
+```
 
 
 
