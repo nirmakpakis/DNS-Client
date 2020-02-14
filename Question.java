@@ -10,6 +10,37 @@ public class Question {
         this.qType = qType;
     }
 
+    public Question(byte[] response) {
+        parseQuestion(response);
+    }
+
+    public void parseQuestion(byte[] response) {
+        // Get qType
+        int i = 12;
+        while (response[i] != 0)
+            i++;
+        byte[] qType = new byte[2];
+        qType[0] = response[i + 1];
+        qType[1] = response[i + 2];
+        this.qType = findQType(qType[1]);
+    }
+
+    public QType findQType(byte b) {
+        switch (b) {
+        case 1:
+            return QType.A;
+        case 2:
+            return QType.NS;
+        case 15:
+            return QType.MX;
+        case 5:
+            return QType.CName;
+        default:
+            throw new RuntimeException("ERROR\tUnrecognized query type");
+        }
+
+    }
+
     public byte[] createQuestionArray() {
         ByteBuffer questionArray = ByteBuffer.allocate(getQNameLength() + 1 + 2 + 2);
         questionArray.put(createQNameArray());

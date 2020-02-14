@@ -17,8 +17,7 @@ public class DnsRequest {
         ByteBuffer request = ByteBuffer.allocate(12 + 5 + getQNameLength());
 
         Header header = new Header();
-        byte[] headerArray = header.createHeaderArray();
-        request.put(headerArray);
+        request.put(header.createHeaderArray());
 
         Question question = new Question(domainName, qType);
         request.put(question.createQuestionArray());

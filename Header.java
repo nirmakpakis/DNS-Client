@@ -5,19 +5,24 @@ public class Header {
 
     public ByteBuffer header = ByteBuffer.allocate(12);
     public byte[] headerArray;
-    public byte[] ID = new byte[2];
+    public int ID;
     public boolean QR;
-    public int OPcode = 0;
     public boolean AA;
     public boolean TC;
     public boolean RD;
     public boolean RA;
-    public int Z = 1;
-    public int DCount; // 2 bytes
-    public int ANCount; // 2 bytes
-    public int ARCount; // 2 bytes
+    public int RCode;
+    public int QDCount;
+    public int ANCount;
+    public int ARCount;
 
     public Header() {
+    }
+
+    public Header(byte[] response) {
+        System.out.println("Header Constructor Initilazed");
+        parseHeader(response);
+        checkHeader();
     }
 
     public byte[] createHeaderArray() {
@@ -37,6 +42,80 @@ public class Header {
 
         // Set byte array
         return header.array();
+    }
+
+    public void parseHeader(byte[] response) {
+
+        System.out.println("ID set");
+        // ID
+        this.ID = getInt(response[0], response[1]);
+
+        System.out.println(ID);
+
+        // QR
+        this.QR = toBoolean((response[2] >> 7) & 1);
+
+        // AA
+        this.AA = toBoolean((response[2] >> 2) & 1);
+
+        // TC
+        this.TC = toBoolean((response[2] >> 1) & 1);
+
+        // RD
+        this.RD = toBoolean((response[2] >> 0) & 1);
+
+        // RA
+        this.RA = toBoolean((response[3] >> 7) & 1);
+
+        // RCODE
+        this.RCode = response[3] & 0x0F;
+
+        // QDCount;
+        this.ANCount = getInt(response[4], response[5]);
+
+        // ANCOUNT
+        this.ANCount = getInt(response[6], response[7]);
+
+        // ARCount
+        this.ANCount = getInt(response[10], response[11]);
+
+    }
+
+    public void checkHeader() {
+        if (this.RA == false)
+            throw new RuntimeException("Server Doesn't Handle Recursive Calls");
+        switch (this.RCode) {
+        case 0:
+            break;
+        case 1:
+            throw new RuntimeException("Format error: the name server was unable to interpret the query");
+        case 2:
+            throw new RuntimeException(
+                    "Server failure: the name server was unable to process this query due to a problem with the name server");
+        case 3:
+            throw new RuntimeException(
+                    "Name error: meaningful only for responses from an authoritative name server, this code signifies that the domain name referenced in the query does not exist");
+        case 4:
+            throw new RuntimeException("Not implemented: the name server does not support the requested kind of query");
+        case 5:
+            throw new RuntimeException(
+                    "Refused: the name server refuses to perform the requested operation for policy reasons");
+        }
+
+    }
+
+    public int getInt(byte byte1, byte byte2) {
+        byte[] temp = new byte[2];
+        temp[0] = byte1;
+        temp[1] = byte2;
+        ByteBuffer wrapped = ByteBuffer.wrap(temp);
+        return wrapped.getShort();
+    }
+
+    public boolean toBoolean(int i) {
+        if (i == 1)
+            return true;
+        return false;
     }
 
 }
