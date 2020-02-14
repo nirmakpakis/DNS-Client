@@ -34,6 +34,7 @@ public class DnsResponse {
         Question question_Response = new Question(response);
         this.questionResponse = question_Response;
 
+        // System.out.println("DNS Record Count:" + headerResponse.ANCount);
         Answer answer = new Answer(response, request.length);
         this.answerRecords = answer.getAnswerRecords(headerResponse.ANCount);
 
@@ -41,10 +42,10 @@ public class DnsResponse {
     }
 
     public void output() {
-        System.out.println("here");
-        // for (Record record : this.answerRecords) {
-        // record.outputRecord();
-        // }
+        System.out.println("***Answer Section (" + headerResponse.ANCount + " answerRecords)***");
+        for (Record record : this.answerRecords) {
+            record.outputRecord();
+        }
     }
 
 }

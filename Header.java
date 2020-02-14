@@ -67,13 +67,13 @@ public class Header {
         this.RCode = response[3] & 0x0F;
 
         // QDCount;
-        this.ANCount = getInt(response[4], response[5]);
+        this.QDCount = getInt(response[4], response[5]);
 
         // ANCOUNT
         this.ANCount = getInt(response[6], response[7]);
 
         // ARCount
-        this.ANCount = getInt(response[10], response[11]);
+        this.ARCount = getInt(response[10], response[11]);
 
     }
 

@@ -13,7 +13,6 @@ public class Answer {
     }
 
     public Record[] getAnswerRecords(int numOfRecords) {
-
         Record[] records = new Record[numOfRecords];
         int offSet1 = requestLenth;
         for (int i = 0; i < numOfRecords; i++) {
@@ -136,9 +135,8 @@ public class Answer {
         case 5:
             return QType.CName;
         default:
-            throw new RuntimeException("ERROR\tUnrecognized query type");
+            return QType.Other;
         }
-
     }
 
     private String parseATypeRDATA(int rdLength, int countByte) {

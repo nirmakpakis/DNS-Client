@@ -65,6 +65,13 @@ public class DnsClient {
             System.out.println("Response received after " + (endTime - startTime) / 1000. + " seconds " + "("
                     + (retryNumber - 1) + " retries)");
 
+            // int i = 0;
+            // for (byte b : responseBytes) {
+            // System.out.println("byte " + i + " is :" + Integer.toBinaryString(b & 255 |
+            // 256).substring(1));
+            // i++;
+            // }
+            // System.out.println(requestBytes.length);
             DnsResponse response = new DnsResponse(requestBytes, responseBytes);
             response.output();
 
@@ -121,10 +128,3 @@ public class DnsClient {
     }
 
 }
-
-// int i = 0;
-// for (byte b : requestBytes) {
-// System.out.println("byte " + i + " is :" + Integer.toBinaryString(b & 255 |
-// 256).substring(1));
-// i++;
-// }
