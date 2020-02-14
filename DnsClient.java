@@ -66,7 +66,7 @@ public class DnsClient {
                     + (retryNumber - 1) + " retries)");
 
             DnsResponse response = new DnsResponse(requestBytes, responseBytes);
-            response.print();
+            response.output();
 
         } catch (SocketException e) {
             System.out.println("ERROR\tCould not create socket");

@@ -20,7 +20,6 @@ public class Header {
     }
 
     public Header(byte[] response) {
-        System.out.println("Header Constructor Initilazed");
         parseHeader(response);
         checkHeader();
     }
@@ -46,11 +45,8 @@ public class Header {
 
     public void parseHeader(byte[] response) {
 
-        System.out.println("ID set");
         // ID
         this.ID = getInt(response[0], response[1]);
-
-        System.out.println(ID);
 
         // QR
         this.QR = toBoolean((response[2] >> 7) & 1);
@@ -82,8 +78,8 @@ public class Header {
     }
 
     public void checkHeader() {
-        if (this.RA == false)
-            throw new RuntimeException("Server Doesn't Handle Recursive Calls");
+        // if (this.RA == false)
+        // throw new RuntimeException("Server Doesn't Handle Recursive Calls");
         switch (this.RCode) {
         case 0:
             break;

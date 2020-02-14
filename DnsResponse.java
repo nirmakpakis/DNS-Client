@@ -1,33 +1,50 @@
+import java.nio.ByteBuffer;
+
 public class DnsResponse {
 
-    // Response parsing
-    public Header headerResponse;
-    public Question questionResponse;
-    public Answer answerResponse;
+    byte[] request;
+    byte[] response;
 
     // Request parsing
     public Header headerRequest;
     public Question questionRequest;
 
-    public DnsResponse(byte[] request, byte[] response) {
-        Header header_Response = new Header(response);
-        this.headerRequest = header_Response;
-        // this.questionResponse = new Question(response);
-        // make an array of answers
-        // offset = request.length
-        // for i -> ANCOUNT
-        // this.answerResponse = new Answer(response, offset);
-        // update offset
+    // Response parsing
+    public Header headerResponse;
+    public Question questionResponse;
+    public Record[] answerRecords;
+    public Record[] additionalRecords;
 
-        // this.headerRequest = new Header(request);
-        // this.questionRequest = new Question(request);
+    public DnsResponse(byte[] request, byte[] response) {
+        // Request and Response
+        this.request = request;
+        this.response = response;
+
+        // Request parsing
+        Header header_Request = new Header(response);
+        this.headerRequest = header_Request;
+
+        Question question_Request = new Question(response);
+        this.questionRequest = question_Request;
+
+        // Response parsing
+        Header header_Response = new Header(response);
+        this.headerResponse = header_Response;
+
+        Question question_Response = new Question(response);
+        this.questionResponse = question_Response;
+
+        Answer answer = new Answer(response, request.length);
+        this.answerRecords = answer.getAnswerRecords(headerResponse.ANCount);
 
         // checkRequestMatchesResponse();
     }
 
-    public void print() {
-        // System.out.println(headerResponse.ANCount);
-        // System.out.println(questionResponse.qType.toString());
+    public void output() {
+        System.out.println("here");
+        // for (Record record : this.answerRecords) {
+        // record.outputRecord();
+        // }
     }
 
 }
