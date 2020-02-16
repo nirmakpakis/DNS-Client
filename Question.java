@@ -36,7 +36,7 @@ public class Question {
         case 5:
             return QType.CName;
         default:
-            throw new RuntimeException("ERROR\tUnrecognized query type");
+            throw new RuntimeException("Error:Query type not known");
         }
 
     }
@@ -66,16 +66,18 @@ public class Question {
         byte[] qType = new byte[2];
         switch (this.qType) {
         case A:
-            qType = hexStringToByteArray("0001");
+            qType = toByte("0001");
             break;
         case NS:
-            qType = hexStringToByteArray("0002");
+            qType = toByte("0002");
             break;
         case MX:
-            qType = hexStringToByteArray("000f");
+            qType = toByte("000f");
             break;
         case CName:
-            qType = hexStringToByteArray("0005");
+            qType = toByte("0005");
+            break;
+        case Other:
             break;
         }
         return qType;
@@ -88,7 +90,7 @@ public class Question {
         return qClass.array();
     }
 
-    public static byte[] hexStringToByteArray(String s) {
+    public static byte[] toByte(String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {

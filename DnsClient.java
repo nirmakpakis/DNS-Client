@@ -1,8 +1,4 @@
-import java.io.IOException;
 import java.net.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
 
 public class DnsClient {
 
@@ -13,7 +9,7 @@ public class DnsClient {
     public String domainName;
     public String serverString;
     public QType qType = QType.A;
-    public byte[] responseBytes = new byte[1024];
+    public byte[] response_bytes = new byte[1024];
 
     public static void main(String args[]) throws Exception {
         DnsClient client = new DnsClient(args);
@@ -31,78 +27,65 @@ public class DnsClient {
         pollRequest(1);
     }
 
-    private void pollRequest(int retryNumber) {
-
-        if (retryNumber > 3) {
-            System.out.println("ERROR\tMaximum number of retries " + 3 + " exceeded");
-            return;
-        }
+    private void pollRequest(int numOfRetries) {
 
         try {
-
-            // Create Datagram socket and request object(s)
             DatagramSocket socket = new DatagramSocket();
-            socket.setSoTimeout(timeOut);
-            InetAddress inetaddress = InetAddress.getByAddress(server);
+            socket.setSoTimeout(this.timeOut);
+            InetAddress i_add = InetAddress.getByAddress(this.server);
             DnsRequest request = new DnsRequest(domainName, qType);
+            byte[] request_bytes = request.createRequest();
 
-            byte[] requestBytes = request.createRequest();
+            DatagramPacket request_packet = new DatagramPacket(request_bytes, request_bytes.length, i_add, portNumber);
+            DatagramPacket response_packet = new DatagramPacket(this.response_bytes, response_bytes.length);
 
-            byte[] responseBytes = new byte[1024];
+            long start = System.currentTimeMillis();
 
-            DatagramPacket requestPacket = new DatagramPacket(requestBytes, requestBytes.length, inetaddress,
-                    portNumber);
-            DatagramPacket responsePacket = new DatagramPacket(responseBytes, responseBytes.length);
+            socket.send(request_packet);
+            socket.receive(response_packet);
 
-            // Send packet and time response
-            long startTime = System.currentTimeMillis();
-            socket.send(requestPacket);
-            socket.receive(responsePacket);
+            long end = System.currentTimeMillis();
 
-            long endTime = System.currentTimeMillis();
             socket.close();
 
-            System.out.println("Response received after " + (endTime - startTime) / 1000. + " seconds " + "("
-                    + (retryNumber - 1) + " retries)");
+            System.out.println("Response received after " + (end - start) / 1000. + " seconds " + "("
+                    + (numOfRetries - 1) + " retries)");
 
-            // int i = 0;
-            // for (byte b : responseBytes) {
-            // System.out.println("byte " + i + " is :" + Integer.toBinaryString(b & 255 |
-            // 256).substring(1));
-            // i++;
-            // }
-            // System.out.println(requestBytes.length);
-            DnsResponse response = new DnsResponse(requestBytes, responseBytes);
-            response.output();
+            DnsResponse response = new DnsResponse(request_bytes, response_bytes);
+            response.outputResponse();
 
-        } catch (SocketException e) {
-            System.out.println("ERROR\tCould not create socket");
         } catch (UnknownHostException e) {
-            System.out.println("ERROR\tUnknown host");
+            System.out.println("Error:Host is not known");
+        } catch (SocketException e) {
+            System.out.println("Error:Can't create socket");
         } catch (SocketTimeoutException e) {
-            System.out.println("ERROR\tSocket Timeout");
-            System.out.println("Reattempting request...");
-            pollRequest(++retryNumber);
+            System.out.println("Error:Socket has timed out. Trying again ...");
+            pollRequest(numOfRetries + 1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        if (numOfRetries + 1 > this.maxRetires) {
+            System.out.println("Error:Max retries " + this.maxRetires + " passed");
+            return;
+        }
     }
 
-    public void parseInput(String[] args) {
+    public void parseInput(String[] inputArray) {
 
-        for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
+        for (int i = 0; i < inputArray.length; i++) {
+            String arg = inputArray[i];
             switch (arg) {
             case "-t":
-                timeOut = Integer.parseInt(args[i + 1]) * 1000;
+                timeOut = Integer.parseInt(inputArray[i + 1]) * 1000;
                 i++;
                 break;
             case "-r":
-                maxRetires = Integer.parseInt(args[i + 1]);
+                maxRetires = Integer.parseInt(inputArray[i + 1]);
                 i++;
                 break;
             case "-p":
-                portNumber = Integer.parseInt(args[i + 1]);
+                portNumber = Integer.parseInt(inputArray[i + 1]);
                 i++;
                 break;
             case "-mx":
@@ -119,7 +102,7 @@ public class DnsClient {
                         int ipValue = Integer.parseInt(addressList[j]);
                         server[j] = (byte) ipValue;
                     }
-                    domainName = args[i + 1];
+                    domainName = inputArray[i + 1];
                 }
                 break;
             }

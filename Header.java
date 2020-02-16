@@ -14,6 +14,7 @@ public class Header {
     public int RCode;
     public int QDCount;
     public int ANCount;
+    public int NSCount;
     public int ARCount;
 
     public Header() {
@@ -21,7 +22,6 @@ public class Header {
 
     public Header(byte[] response) {
         parseHeader(response);
-        checkHeader();
     }
 
     public byte[] createHeaderArray() {
@@ -69,34 +69,14 @@ public class Header {
         // QDCount;
         this.QDCount = getInt(response[4], response[5]);
 
-        // ANCOUNT
+        // ANCount
         this.ANCount = getInt(response[6], response[7]);
+
+        // NSCount
+        this.NSCount = getInt(response[8], response[9]);
 
         // ARCount
         this.ARCount = getInt(response[10], response[11]);
-
-    }
-
-    public void checkHeader() {
-        // if (this.RA == false)
-        // throw new RuntimeException("Server Doesn't Handle Recursive Calls");
-        switch (this.RCode) {
-        case 0:
-            break;
-        case 1:
-            throw new RuntimeException("Format error: the name server was unable to interpret the query");
-        case 2:
-            throw new RuntimeException(
-                    "Server failure: the name server was unable to process this query due to a problem with the name server");
-        case 3:
-            throw new RuntimeException(
-                    "Name error: meaningful only for responses from an authoritative name server, this code signifies that the domain name referenced in the query does not exist");
-        case 4:
-            throw new RuntimeException("Not implemented: the name server does not support the requested kind of query");
-        case 5:
-            throw new RuntimeException(
-                    "Refused: the name server refuses to perform the requested operation for policy reasons");
-        }
 
     }
 

@@ -1,5 +1,4 @@
 import java.nio.ByteBuffer;
-import java.util.Random;
 
 public class DnsRequest {
 
@@ -27,7 +26,7 @@ public class DnsRequest {
 
     public int getQNameLength() {
         int count = 0;
-        String[] items = domainName.split("\\.");
+        String[] items = this.domainName.split("\\.");
         for (String item : items) {
             count += item.length() + 1;
         }
